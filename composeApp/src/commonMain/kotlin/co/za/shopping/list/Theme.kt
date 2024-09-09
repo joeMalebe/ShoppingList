@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import co.za.shopping.list.Accent
 import co.za.shopping.list.DarkBackground
 import co.za.shopping.list.DarkTextColor
+import co.za.shopping.list.ErrorColor
 import co.za.shopping.list.LightBackground
 import co.za.shopping.list.LightTextColor
 import co.za.shopping.list.Primary
@@ -15,6 +16,7 @@ import co.za.shopping.list.TextOnPrimaryDark
 import co.za.shopping.list.TextOnPrimaryLight
 import co.za.shopping.list.TextOnSecondaryDark
 import co.za.shopping.list.TextOnSecondaryLight
+import co.za.shopping.list.White
 
 @Composable
 fun GotToGetTheme(
@@ -43,7 +45,9 @@ val colorsLight = lightColors(
     onPrimary = TextOnPrimaryLight,
     onSecondary = TextOnSecondaryLight,
     surface = LightBackground,
-    onSurface = LightBackground
+    onSurface = LightBackground,
+    error =  ErrorColor,
+    onError = White
 )
 
 val colorsDark = darkColors(
@@ -56,6 +60,8 @@ val colorsDark = darkColors(
     onPrimary = TextOnPrimaryDark,
     onSecondary = TextOnSecondaryDark,
     surface = DarkBackground,
-    onSurface = DarkBackground
+    onSurface = DarkBackground,
+    error = ErrorColor,
+    onError = White
 )
 
