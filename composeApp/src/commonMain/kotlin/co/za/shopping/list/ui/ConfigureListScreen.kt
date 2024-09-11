@@ -1,11 +1,13 @@
 package co.za.shopping.list.ui
 
 import CustomSnackbarVisuals
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -16,6 +18,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 
 import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -63,7 +66,11 @@ class ConfigureListScreen : Screen {
 
         when {
             state.loading -> {
-                Text("Loading")
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.size(50.dp)
+                        .background(MaterialTheme.colors.primary)
+                        .padding(16.dp))
+                }
             }
 
             else -> {
