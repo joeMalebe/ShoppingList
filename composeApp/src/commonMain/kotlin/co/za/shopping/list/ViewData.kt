@@ -1,6 +1,8 @@
 package co.za.shopping.list
 
 import androidx.lifecycle.ViewModel
+import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.StateScreenModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -11,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 
-class ViewData : ViewModel() {
+class ViewData : StateScreenModel<State>(State(loading = true)) {
 
     private val _groceryList = mutableListOf<GroceryItem>()
 
@@ -30,8 +32,8 @@ class ViewData : ViewModel() {
     val groceriesByCategory = groceryItems.groupBy { it.categoryId }.toImmutableMap()
 
     fun loadData() {
-        _viewState.value = viewState.value.copy(loading = true)
-        _viewState.value = viewState.value.copy(
+        mutableState.value = state.value.copy(loading = true)
+        mutableState.value = state.value.copy(
             loading = false,
             groceriesItems = groceryItems.toPersistentList(),
             categoriesIds = getCategoriesIds(),
@@ -52,7 +54,7 @@ class ViewData : ViewModel() {
 
     fun removeGroceryItem(item: GroceryItem) {
         _groceryList.remove(item)
-        //_viewState.value = viewState.value.copy(itemsInList = _groceryList.toPersistentList())
+        //state.value = viewState.value.copy(itemsInList = _groceryList.toPersistentList())
     }
 }
 
