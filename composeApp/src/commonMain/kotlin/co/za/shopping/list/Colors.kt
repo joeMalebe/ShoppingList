@@ -8,6 +8,7 @@ val Accent = Color(0xFFE57373) // Tomato Red
 val SubtleAccent = Color(0xFF64B5F6) // Sky Blue
 val ErrorColor = Color(0xFFD32F2F) // Deep Red
 val White = Color(0xFFFFFFFF) // White
+val Success = Color(0xFF4CAF50) // Green
 
 // Light Theme
 val LightBackground = Color(0xFFFFF9E3) // Light Beige

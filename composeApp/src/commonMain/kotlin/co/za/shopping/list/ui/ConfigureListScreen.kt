@@ -1,5 +1,6 @@
 package co.za.shopping.list.ui
 
+import CustomSnackbarVisuals
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -13,12 +14,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Snackbar
-import androidx.compose.material.SnackbarHost
+
 import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,16 +34,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.core.lifecycle.rememberScreenLifecycleOwner
 import co.za.shopping.list.GroceryCategory
 import co.za.shopping.list.GroceryItem
+import co.za.shopping.list.Success
 import co.za.shopping.list.ViewData
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ConfigureListScreen : Screen {
@@ -71,12 +71,10 @@ class ConfigureListScreen : Screen {
                     state.groceryCategories
                 }
                 val scope = rememberCoroutineScope()
-                val scaffoldState = rememberScaffoldState()
 
                 val items = state.itemsInList.toMutableStateList()
 
                 Screen(
-                    scaffoldState = scaffoldState,
                     items = items,
                     categories = categories,
                     scope = scope
@@ -87,19 +85,23 @@ class ConfigureListScreen : Screen {
 
     @Composable
     private fun Screen(
-        scaffoldState: ScaffoldState,
         items: SnapshotStateList<GroceryItem>,
         categories: PersistentList<GroceryCategory>,
         scope: CoroutineScope
     ) {
-        Scaffold(scaffoldState = scaffoldState, snackbarHost = {
-            SnackbarHost(it) { data ->
-                Snackbar(
-                    backgroundColor = MaterialTheme.colors.error,
-                    contentColor = MaterialTheme.colors.onError,
-                    snackbarData = data
-                )
-            }
+
+        val snackbarHostState = remember { SnackbarHostState() }
+        Scaffold(snackbarHost  = {
+            SnackbarHost(hostState = snackbarHostState, snackbar = { snackbarData ->
+                val customVisuals = snackbarData.visuals as? CustomSnackbarVisuals
+                if (customVisuals != null) {
+                    Snackbar(
+                        containerColor = customVisuals.containerColor,
+                        contentColor = customVisuals.contentColor,
+                        snackbarData = snackbarData
+                    )
+                }
+            })
         }) {
 
             Box {
@@ -112,9 +114,29 @@ class ConfigureListScreen : Screen {
                     onAddGroceryItem = { item ->
                         if (!items.contains(item)) {
                             items.add(item)
+                            scope.launch {
+                                val job = scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        CustomSnackbarVisuals(
+                                            containerColor = Success,
+                                            contentColor = Color.White,
+                                            message = "${item.name} added to list"
+                                        )
+                                    )
+                                }
+                                delay(1000)
+                                job.cancel()
+                            }
+
                         } else
                             scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(message = "${item.name} already in list")
+                                val job = scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    CustomSnackbarVisuals(message = "${item.name} already in list")
+                                )
+                            }
+                                delay(1000)
+                                job.cancel()
                             }
                     },
                 )
