@@ -1,7 +1,7 @@
 package co.za.shopping.list.ui
 
 import CustomSnackbarVisuals
-import androidx.compose.foundation.background
+import HeadingText
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.Box
@@ -42,7 +42,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import co.za.shopping.list.GroceryCategory
 import co.za.shopping.list.GroceryItem
 import co.za.shopping.list.Success
-import co.za.shopping.list.ViewData
+import co.za.shopping.list.ItemViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -52,24 +52,22 @@ class ConfigureListScreen : Screen {
 
     @Composable
     override fun Content() {
-        val viewData: ViewData = rememberScreenModel { ViewData() }
+        val itemViewModel: ItemViewModel = rememberScreenModel { ItemViewModel() }
 
         //todo add a fab or button to begin the shopping experience. in the experience the user can remove items from the list as they shop
         // they can also add new items and update the quantity of items they want to buy
 
 
-        val state by viewData.state.collectAsState()
+        val state by itemViewModel.state.collectAsState()
 
         LaunchedEffect(currentCompositeKeyHash) {
-            viewData.loadData()
+            itemViewModel.loadData()
         }
 
         when {
             state.loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(modifier = Modifier.size(50.dp)
-                        .background(MaterialTheme.colors.primary)
-                        .padding(16.dp))
+                    CircularProgressIndicator(modifier = Modifier.size(50.dp), color = MaterialTheme.colors.primary)
                 }
             }
 
@@ -207,14 +205,6 @@ class ConfigureListScreen : Screen {
             }
 
         }
-    }
-
-    @Composable
-    private fun HeadingText(text: String) {
-        Text(
-            text,
-            style = MaterialTheme.typography.h5,
-        )
     }
 
     @Composable

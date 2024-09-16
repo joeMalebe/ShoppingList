@@ -1,8 +1,10 @@
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import co.za.shopping.list.Accent
 import co.za.shopping.list.DarkBackground
 import co.za.shopping.list.DarkTextColor
@@ -32,6 +34,14 @@ fun GotToGetTheme(
     MaterialTheme(colors = colors) {
         content()
     }
+}
+
+@Composable
+fun HeadingText(text: String, textColer: Color = MaterialTheme.colors.onBackground) {
+    Text(
+        text,
+        style = MaterialTheme.typography.h5,
+    )
 }
 
 

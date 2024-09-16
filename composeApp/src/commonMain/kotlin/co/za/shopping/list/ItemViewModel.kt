@@ -1,7 +1,5 @@
 package co.za.shopping.list
 
-import androidx.lifecycle.ViewModel
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.collections.immutable.ImmutableList
@@ -16,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class ViewData : StateScreenModel<State>(State(loading = true)) {
+class ItemViewModel : StateScreenModel<State>(State(loading = true)) {
 
     private val _groceryList = mutableListOf<GroceryItem>()
 
