@@ -37,8 +37,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberNavigatorScreenModel
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import co.za.shopping.list.GroceryCategory
 import co.za.shopping.list.GroceryItem
 import co.za.shopping.list.Success
@@ -48,10 +51,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ConfigureListScreen : Screen {
+class ConfigureListScreen(private val cartID:String) : Screen {
 
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+
+        val cartViewModel = navigator.rememberNavigatorScreenModel { CartViewModel() }
         val itemViewModel: ItemViewModel = rememberScreenModel { ItemViewModel() }
 
         //todo add a fab or button to begin the shopping experience. in the experience the user can remove items from the list as they shop
@@ -82,7 +88,8 @@ class ConfigureListScreen : Screen {
                 Screen(
                     items = items,
                     categories = categories,
-                    scope = scope
+                    scope = scope,
+                    cartName = cartViewModel.getCart(id = cartID).name
                 )
             }
         }
@@ -92,7 +99,8 @@ class ConfigureListScreen : Screen {
     private fun Screen(
         items: SnapshotStateList<GroceryItem>,
         categories: PersistentList<GroceryCategory>,
-        scope: CoroutineScope
+        scope: CoroutineScope,
+        cartName: String
     ) {
 
         val snackbarHostState = remember { SnackbarHostState() }
@@ -144,6 +152,7 @@ class ConfigureListScreen : Screen {
                                 job.cancel()
                             }
                     },
+                    cartName = cartName,
                 )
             }
         }
@@ -151,11 +160,12 @@ class ConfigureListScreen : Screen {
 
     @Composable
     private fun Content(
+        cartName: String,
         groceries: SnapshotStateList<GroceryItem>,
         categories: PersistentList<GroceryCategory>,
         onRemoveGroceryItem: (GroceryItem) -> Unit,
         modifier: Modifier = Modifier,
-        onAddGroceryItem: (GroceryItem) -> Unit
+        onAddGroceryItem: (GroceryItem) -> Unit,
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(100.dp),
@@ -167,7 +177,7 @@ class ConfigureListScreen : Screen {
 
             if (groceries.isNotEmpty()) {
                 item(span = { GridItemSpan(3) }) {
-                    HeadingText("Grocery List")
+                    HeadingText(cartName)
 
                 }
 

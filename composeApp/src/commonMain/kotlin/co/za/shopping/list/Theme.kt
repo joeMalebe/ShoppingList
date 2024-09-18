@@ -55,9 +55,10 @@ val colorsLight = lightColors(
     onPrimary = TextOnPrimaryLight,
     onSecondary = TextOnSecondaryLight,
     surface = LightBackground,
-    onSurface = LightBackground,
+    onSurface = LightTextColor,
     error =  ErrorColor,
-    onError = White
+    onError = White,
+
 )
 
 val colorsDark = darkColors(
@@ -70,7 +71,7 @@ val colorsDark = darkColors(
     onPrimary = TextOnPrimaryDark,
     onSecondary = TextOnSecondaryDark,
     surface = DarkBackground,
-    onSurface = DarkBackground,
+    onSurface = DarkTextColor,
     error = ErrorColor,
     onError = White
 )

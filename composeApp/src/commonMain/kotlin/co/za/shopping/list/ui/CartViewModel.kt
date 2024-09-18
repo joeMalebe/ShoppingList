@@ -6,7 +6,7 @@ import co.za.shopping.list.ListCart
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-class ViewAllListsScreenModel(private val carts: Carts = Carts()) :
+class CartViewModel(private val carts: Carts = Carts()) :
     StateScreenModel<ViewAllListsScreenState>(ViewAllListsScreenState(loading = true)) {
     fun loadData() {
         mutableState.value = state.value.copy(
@@ -14,6 +14,18 @@ class ViewAllListsScreenModel(private val carts: Carts = Carts()) :
             lists = carts.getAllCarts(),
             noList = carts.getAllCarts().isEmpty()
         )
+    }
+
+    fun addCart(name: String) {
+        if (name.isEmpty()) return
+        carts.addCart(ListCart(id = name, name = name))
+    }
+
+    fun getCart(id: String): ListCart {
+        carts.getCartById(id)?.let {
+            return it
+        }
+        throw IllegalArgumentException("Cart with id $id not found")
     }
 }
 
