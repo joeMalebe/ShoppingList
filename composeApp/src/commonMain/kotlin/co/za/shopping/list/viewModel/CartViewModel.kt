@@ -1,7 +1,8 @@
-package co.za.shopping.list.ui
+package co.za.shopping.list.viewModel
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import co.za.shopping.list.Carts
+import co.za.shopping.list.GroceryItem
 import co.za.shopping.list.ListCart
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -26,6 +27,11 @@ class CartViewModel(private val carts: Carts = Carts()) :
             return it
         }
         throw IllegalArgumentException("Cart with id $id not found")
+    }
+
+    fun updateCartItems(id: String, items: ImmutableList<GroceryItem>) {
+        val cart = getCart(id)
+        cart.updateItems(items)
     }
 }
 

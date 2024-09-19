@@ -1,7 +1,11 @@
-package co.za.shopping.list
+package co.za.shopping.list.viewModel
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import co.za.shopping.list.GroceryCategory
+import co.za.shopping.list.GroceryItem
+import co.za.shopping.list.groceryCategories
+import co.za.shopping.list.groceryItems
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -34,7 +38,7 @@ class ItemViewModel : StateScreenModel<State>(State(loading = true)) {
 
     fun loadData() {
         screenModelScope.launch {
-          delay(2000)
+          delay(600)
 
         mutableState.value = state.value.copy(
             loading = false,

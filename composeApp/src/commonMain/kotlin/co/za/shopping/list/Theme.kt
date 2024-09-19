@@ -1,10 +1,12 @@
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import co.za.shopping.list.Accent
 import co.za.shopping.list.DarkBackground
 import co.za.shopping.list.DarkTextColor
@@ -31,24 +33,45 @@ fun GotToGetTheme(
         colorsLight
     }
 
-    MaterialTheme(colors = colors) {
+    MaterialTheme(colorScheme = colors) {
         content()
     }
 }
 
 @Composable
-fun HeadingText(text: String, textColer: Color = MaterialTheme.colors.onBackground) {
+fun HeadingText(text: String, textColer: Color = MaterialTheme.colorScheme.onBackground) {
     Text(
         text,
-        style = MaterialTheme.typography.h5,
+        color = textColer,
+        style = MaterialTheme.typography.headlineMedium,
+    )
+}
+
+@Composable
+fun GroceryCategoryText(text: String, textColer: Color = MaterialTheme.colorScheme.onBackground) {
+    Text(
+        text,
+        color = textColer,
+        style = MaterialTheme.typography.titleLarge,
+    )
+}
+
+@Composable
+fun GroceryItemText(text: String, textColer: Color = MaterialTheme.colorScheme.onSecondary, textAlign: TextAlign = TextAlign.Center) {
+    Text(
+        text,
+        style = MaterialTheme.typography.titleMedium,
+        color = textColer,
+        fontWeight = FontWeight.Bold,
+        textAlign = textAlign
     )
 }
 
 
-val colorsLight = lightColors(
+val colorsLight = lightColorScheme(
     primary = Primary,
-    primaryVariant = Accent,
-    secondaryVariant = SubtleAccent,
+    onPrimaryContainer = Accent,
+    onSecondaryContainer = SubtleAccent,
     secondary = Secondary,
     background = LightBackground,
     onBackground = LightTextColor,
@@ -61,10 +84,10 @@ val colorsLight = lightColors(
 
 )
 
-val colorsDark = darkColors(
+val colorsDark = darkColorScheme(
     primary = Primary,
-    primaryVariant = Accent,
-    secondaryVariant = SubtleAccent,
+    onPrimaryContainer = Accent,
+    onSecondaryContainer = SubtleAccent,
     secondary = Secondary,
     background = DarkBackground,
     onBackground = DarkTextColor,
